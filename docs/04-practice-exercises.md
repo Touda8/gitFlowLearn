@@ -69,7 +69,88 @@ git flow release start 1.0.0
 git flow release finish 1.0.0
 ```
 
-## 练习 4：冲突解决
+## 练习 4：Git Stash 暂存操作
+
+### 目标
+学习使用 git stash 管理临时更改
+
+### 步骤
+1. 修改 `hello.txt` 文件但不提交
+2. 使用 `git stash` 暂存更改
+3. 切换到其他分支进行紧急修复
+4. 返回原分支并恢复暂存的更改
+5. 提交最终更改
+
+### 命令示例
+```bash
+# 修改文件
+echo "临时修改内容" >> hello.txt
+git status
+
+# 暂存更改
+git stash save "临时保存的修改"
+git status
+
+# 查看暂存列表
+git stash list
+
+# 进行其他工作...
+git checkout -b hotfix/urgent-fix
+echo "紧急修复" > urgent-fix.txt
+git add urgent-fix.txt
+git commit -m "紧急修复"
+git checkout main
+
+# 恢复暂存的更改
+git stash pop
+git add hello.txt
+git commit -m "完成之前暂存的修改"
+```
+
+## 练习 5：Git Rebase 变基操作
+
+### 目标
+学习使用 git rebase 整理提交历史
+
+### 步骤
+1. 创建功能分支并进行多次提交
+2. 使用交互式 rebase 整理提交历史
+3. 将功能分支变基到最新的主分支
+4. 合并到主分支
+
+### 命令示例
+```bash
+# 创建功能分支
+git checkout -b feature/rebase-demo
+
+# 进行多次小提交
+echo "第一次修改" >> demo.txt
+git add demo.txt
+git commit -m "第一次修改"
+
+echo "第二次修改" >> demo.txt
+git add demo.txt
+git commit -m "第二次修改"
+
+echo "第三次修改" >> demo.txt
+git add demo.txt
+git commit -m "第三次修改"
+
+# 交互式变基，合并最近3个提交
+git rebase -i HEAD~3
+
+# 变基到主分支
+git checkout main
+git pull origin main  # 确保主分支是最新的
+git checkout feature/rebase-demo
+git rebase main
+
+# 合并到主分支
+git checkout main
+git merge feature/rebase-demo
+```
+
+## 练习 6：冲突解决
 
 ### 目标
 学习如何解决合并冲突
@@ -80,6 +161,28 @@ git flow release finish 1.0.0
 3. 尝试合并产生冲突
 4. 手动解决冲突
 5. 完成合并
+
+### 命令示例
+```bash
+# 在主分支修改文件
+echo "主分支的内容" > conflict-demo.txt
+git add conflict-demo.txt
+git commit -m "主分支修改"
+
+# 创建分支并修改同一文件
+git checkout -b feature/conflict
+echo "功能分支的内容" > conflict-demo.txt
+git add conflict-demo.txt
+git commit -m "功能分支修改"
+
+# 尝试合并（会产生冲突）
+git checkout main
+git merge feature/conflict
+
+# 手动解决冲突后
+git add conflict-demo.txt
+git commit -m "解决合并冲突"
+```
 
 ## 练习记录
 
@@ -100,7 +203,17 @@ git flow release finish 1.0.0
 - 遇到的问题：
 - 学到的知识点：
 
-### 练习 4 完成情况
+### 练习 4 完成情况（Git Stash）
+- [ ] 已完成
+- 遇到的问题：
+- 学到的知识点：
+
+### 练习 5 完成情况（Git Rebase）
+- [ ] 已完成
+- 遇到的问题：
+- 学到的知识点：
+
+### 练习 6 完成情况（冲突解决）
 - [ ] 已完成
 - 遇到的问题：
 - 学到的知识点：

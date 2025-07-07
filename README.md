@@ -36,29 +36,35 @@
 #### 5. 撤销和修改
 - [ ] `git reset` - 重置提交
 - [ ] `git revert` - 反转提交
-- [ ] `git stash` - 暂存更改
+- [ ] `git stash` - 暂存更改 ⭐
 - [ ] `git clean` - 清理未跟踪文件
 
-#### 6. 标签管理
+#### 6. 变基操作 ⭐
+- [ ] `git rebase` - 变基操作
+- [ ] `git rebase -i` - 交互式变基
+- [ ] `git rebase --continue` - 继续变基
+- [ ] `git rebase --abort` - 取消变基
+
+#### 7. 标签管理
 - [ ] `git tag` - 创建标签
 - [ ] `git tag -a` - 创建注释标签
 - [ ] `git push --tags` - 推送标签
 
-#### 7. 查看和比较
+#### 8. 查看和比较
 - [ ] `git show` - 显示提交详情
 - [ ] `git blame` - 显示文件修改历史
 - [ ] `git diff --cached` - 查看暂存区差异
 - [ ] `git log --graph` - 图形化日志
 
 ### 第三部分：Git Flow 工作流
-#### 8. Git Flow 基础概念
+#### 9. Git Flow 基础概念
 - [ ] 主分支（main/master）
 - [ ] 开发分支（develop）
 - [ ] 功能分支（feature）
 - [ ] 发布分支（release）
 - [ ] 热修复分支（hotfix）
 
-#### 9. Git Flow 命令
+#### 10. Git Flow 命令
 - [ ] `git flow init` - 初始化 Git Flow
 - [ ] `git flow feature start` - 开始新功能
 - [ ] `git flow feature finish` - 完成功能
@@ -68,21 +74,27 @@
 - [ ] `git flow hotfix finish` - 完成热修复
 
 ### 第四部分：高级技巧
-#### 10. 交互式操作
+#### 11. 交互式操作
 - [ ] `git add -i` - 交互式添加
 - [ ] `git rebase -i` - 交互式变基
 - [ ] `git commit --amend` - 修改最后一次提交
 
-#### 11. 钩子和自动化
+#### 12. 钩子和自动化
 - [ ] Git Hooks 介绍
 - [ ] 预提交钩子
 - [ ] 预推送钩子
 
-#### 12. 协作最佳实践
+#### 13. 协作最佳实践
 - [ ] 分支命名规范
 - [ ] 提交信息规范
 - [ ] 代码审查流程
 - [ ] 冲突解决策略
+
+### 第五部分：专题深入 ⭐
+#### 14. Git Stash 和 Rebase 详解
+- [ ] Git Stash 暂存工作区更改
+- [ ] Git Rebase 变基操作详解
+- [ ] 实际应用场景和最佳实践
 
 ## 练习进度
 - [x] 仓库初始化完成
