@@ -5,6 +5,10 @@
 
 class UserLogin:
     def __init__(self):
+        # feature分支：更严格的密码要求
+        self.min_password_length = 10
+        self.require_special_chars = True
+        self.special_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
         self.users = {
             'admin': 'password123',
             'user1': 'mypassword',
@@ -22,6 +26,21 @@ class UserLogin:
         Returns:
             dict: 包含认证结果的字典
         """
+        # feature分支：更严格的密码验证
+        if len(password) < self.min_password_length:
+            return {
+                'success': False,
+                'message': f'密码长度不能少于{self.min_password_length}位',
+                'user': None
+            }
+        
+        if self.require_special_chars and not any(c in self.special_chars for c in password):
+            return {
+                'success': False,
+                'message': '密码必须包含特殊字符',
+                'user': None
+            }
+            
         if username in self.users:
             if self.users[username] == password:
                 return {
