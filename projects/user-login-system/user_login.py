@@ -5,8 +5,10 @@
 
 class UserLogin:
     def __init__(self):
-        # 提高密码安全要求：最小长度8位
-        self.min_password_length = 8
+        # 合并解决：采用更严格的密码要求（10位长度+特殊字符）
+        self.min_password_length = 10
+        self.require_special_chars = True
+        self.special_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
         self.users = {
             'admin': 'password123',
             'user1': 'mypassword',
@@ -24,11 +26,18 @@ class UserLogin:
         Returns:
             dict: 包含认证结果的字典
         """
-        # 检查密码长度（main分支的修改）
+        # 合并解决：综合两个分支的密码验证逻辑
         if len(password) < self.min_password_length:
             return {
                 'success': False,
                 'message': f'密码长度不能少于{self.min_password_length}位',
+                'user': None
+            }
+        
+        if self.require_special_chars and not any(c in self.special_chars for c in password):
+            return {
+                'success': False,
+                'message': '密码必须包含特殊字符',
                 'user': None
             }
             
