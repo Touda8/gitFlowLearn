@@ -5,6 +5,8 @@
 
 class UserLogin:
     def __init__(self):
+        # 提高密码安全要求：最小长度8位
+        self.min_password_length = 8
         self.users = {
             'admin': 'password123',
             'user1': 'mypassword',
@@ -22,6 +24,14 @@ class UserLogin:
         Returns:
             dict: 包含认证结果的字典
         """
+        # 检查密码长度（main分支的修改）
+        if len(password) < self.min_password_length:
+            return {
+                'success': False,
+                'message': f'密码长度不能少于{self.min_password_length}位',
+                'user': None
+            }
+            
         if username in self.users:
             if self.users[username] == password:
                 return {
