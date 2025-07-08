@@ -238,11 +238,251 @@ git config --global http.lowSpeedTime 999999
 5. **文档同步**：及时更新相关文档
 6. **分支清理**：合并后及时删除不需要的分支
 
+## 合并冲突处理指南
+
+### 常见合并冲突场景
+
+合并冲突发生在Git无法自动合并两个分支的更改时。以下是最常见的冲突情况：
+
+#### 场景一：同一文件的同一行被不同分支修改
+```
+main分支：    用户密码最小长度为6位
+feature分支： 用户密码最小长度为8位
+```
+
+#### 场景二：一个分支修改文件，另一个分支删除文件
+```
+main分支：    删除了 old_login.py
+feature分支： 修改了 old_login.py 的内容
+```
+
+#### 场景三：同一文件的相邻区域被修改
+```
+main分支：    在第10行添加了新的验证逻辑
+feature分支： 在第12行添加了不同的验证逻辑
+```
+
+### 实战演练：创建并解决合并冲突
+
+让我们通过实际操作来演示如何处理合并冲突：
+
+#### 步骤1：准备冲突场景
+```bash
+# 1. 确保在main分支
+git checkout main
+
+# 2. 在main分支上修改user_login.py文件
+# 假设我们修改了密码验证规则
+# 修改内容：密码最小长度从6位改为8位
+
+# 3. 提交main分支的更改
+git add projects/user-login-system/user_login.py
+git commit -m "提高密码安全要求：最小长度改为8位"
+
+# 4. 创建功能分支（基于修改前的main分支）
+git checkout HEAD~1  # 回到上一个提交
+git checkout -b feature/password-validation
+
+# 5. 在feature分支上修改同一文件的同一区域
+# 修改内容：密码最小长度改为10位，并添加特殊字符要求
+
+# 6. 提交feature分支的更改
+git add projects/user-login-system/user_login.py
+git commit -m "增强密码验证：最小长度10位且需特殊字符"
+```
+
+#### 步骤2：尝试合并并遇到冲突
+```bash
+# 1. 切换到main分支
+git checkout main
+
+# 2. 尝试合并feature分支
+git merge feature/password-validation
+```
+
+**预期输出**：
+```
+Auto-merging projects/user-login-system/user_login.py
+CONFLICT (content): Merge conflict in projects/user-login-system/user_login.py
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+#### 步骤3：查看冲突状态
+```bash
+# 查看冲突文件
+git status
+```
+
+**输出示例**：
+```
+On branch main
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   projects/user-login-system/user_login.py
+```
+
+#### 步骤4：检查冲突内容
+```bash
+# 查看冲突文件内容
+cat projects/user-login-system/user_login.py
+```
+
+**冲突标记说明**：
+```python
+class UserLogin:
+    def __init__(self):
+        self.users = {
+            "admin": "admin123",
+            "user1": "password123",
+            "developer": "dev2024"
+        }
+<<<<<<< HEAD
+        self.min_password_length = 8  # main分支的修改
+=======
+        self.min_password_length = 10  # feature分支的修改
+        self.require_special_chars = True
+>>>>>>> feature/password-validation
+```
+
+**冲突标记解释**：
+- `<<<<<<< HEAD`：当前分支（main）的内容开始
+- `=======`：分隔符，分隔两个分支的不同内容
+- `>>>>>>> feature/password-validation`：被合并分支的内容结束
+
+#### 步骤5：解决冲突的三种方法
+
+##### 方法一：手动编辑解决冲突
+```bash
+# 1. 用文本编辑器打开冲突文件
+code projects/user-login-system/user_login.py
+
+# 2. 手动编辑，选择合适的解决方案
+```
+
+**解决方案选择**：
+```python
+# 选项1：保留main分支的更改
+self.min_password_length = 8
+
+# 选项2：保留feature分支的更改  
+self.min_password_length = 10
+self.require_special_chars = True
+
+# 选项3：合并两个更改（推荐）
+self.min_password_length = 10  # 采用更严格的要求
+self.require_special_chars = True  # 保留新功能
+```
+
+##### 方法二：使用Git合并工具
+```bash
+# 启动Git的默认合并工具
+git mergetool
+```
+
+##### 方法三：使用VS Code解决冲突
+```bash
+# 在VS Code中打开项目
+code .
+# VS Code会高亮显示冲突，提供"Accept Current Change"、"Accept Incoming Change"、"Accept Both Changes"选项
+```
+
+#### 步骤6：完成冲突解决
+```bash
+# 1. 删除冲突标记，保存文件
+# 确保文件中没有 <<<<<<<、=======、>>>>>>> 标记
+
+# 2. 添加解决后的文件到暂存区
+git add projects/user-login-system/user_login.py
+
+# 3. 检查是否还有其他冲突
+git status
+
+# 4. 完成合并提交
+git commit -m "解决合并冲突：统一密码验证规则
+
+- 采用10位最小长度要求（更安全）
+- 保留特殊字符验证功能
+- 合并main分支和feature分支的密码策略"
+```
+
+#### 步骤7：验证合并结果
+```bash
+# 1. 查看合并历史
+git log --oneline --graph -5
+
+# 2. 测试合并后的功能
+cd projects/user-login-system
+python user_login.py
+
+# 3. 运行测试确保没有破坏现有功能
+python test_user_login.py
+```
+
+### 冲突解决的最佳实践
+
+#### 预防冲突的策略
+1. **频繁同步**：定期从main分支拉取更新
+```bash
+git checkout feature/your-branch
+git pull origin main
+```
+
+2. **小步提交**：避免大范围修改，减少冲突概率
+3. **团队沟通**：协调团队成员避免同时修改同一文件
+4. **代码审查**：通过Pull Request进行代码审查
+
+#### 解决冲突时的注意事项
+1. **理解冲突**：仔细阅读冲突的两个版本
+2. **测试验证**：解决冲突后必须测试功能
+3. **保持功能完整**：确保合并后的代码逻辑正确
+4. **文档更新**：如果API或接口发生变化，更新相关文档
+
+#### 紧急情况处理
+```bash
+# 如果合并过程中想要放弃
+git merge --abort
+
+# 如果已经解决了部分冲突但想重新开始
+git reset --hard HEAD
+
+# 查看合并前的状态
+git reflog
+```
+
+### 复杂冲突场景处理
+
+#### 多文件冲突
+```bash
+# 查看所有冲突文件
+git diff --name-only --diff-filter=U
+
+# 逐个解决冲突文件
+git add file1.py
+git add file2.py
+git commit -m "解决多文件合并冲突"
+```
+
+#### 二进制文件冲突
+```bash
+# 查看二进制文件冲突
+git status
+
+# 选择保留某个版本
+git checkout --theirs binary-file.png  # 保留被合并分支的版本
+git checkout --ours binary-file.png    # 保留当前分支的版本
+git add binary-file.png
+```
+
 ## 学习要点
 
 1. **理解三个区域**：工作区、暂存区、本地仓库
 2. **掌握分支概念**：分支是Git的核心功能
 3. **熟悉远程操作**：本地和远程仓库的同步
-4. **养成良好习惯**：规范的工作流程和提交习惯
+4. **冲突解决技能**：掌握各种合并冲突的处理方法
+5. **养成良好习惯**：规范的工作流程和提交习惯
 
-这个完整的工作流演示了现代软件开发中Git分支管理的最佳实践。
+这个完整的工作流演示了现代软件开发中Git分支管理和冲突解决的最佳实践。
