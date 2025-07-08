@@ -69,3 +69,11 @@ obj/
 *.bak
 *.backup
 *.old
+
+# 嵌套Git仓库 - 忽略所有子目录中的.git目录
+projects/version-rollback-tutorial/ecommerce-site/.git
+projects/version-rollback-tutorial/reset-demo/.git
+
+# 也可以忽略特定的演示目录Git仓库（可选）
+# projects/version-rollback-tutorial/ecommerce-site/
+# projects/version-rollback-tutorial/reset-demo/
