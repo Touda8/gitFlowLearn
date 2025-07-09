@@ -43,7 +43,9 @@ class TaskManager {
     }
     
     deleteTask(taskId) {
-        this.tasks = this.tasks.filter(task => task.id !== taskId);
+        // 修复bug：确保taskId是数字类型
+        const id = parseInt(taskId);
+        this.tasks = this.tasks.filter(task => task.id !== id);
         this.saveTasks();
         this.renderTasks();
     }
