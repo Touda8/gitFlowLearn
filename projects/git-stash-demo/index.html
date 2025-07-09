@@ -1,0 +1,32 @@
+# Web应用主页面
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务管理系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>任务管理系统 v1.0</h1>
+        
+        <div class="task-form">
+            <h2>添加新任务</h2>
+            <form id="taskForm">
+                <input type="text" id="taskInput" placeholder="请输入任务..." required>
+                <button type="submit">添加任务</button>
+            </form>
+        </div>
+        
+        <div class="task-list">
+            <h2>任务列表</h2>
+            <ul id="taskList">
+                <!-- 动态生成的任务列表 -->
+            </ul>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
