@@ -24,12 +24,14 @@ class TaskManager {
     addTask() {
         const taskInput = document.getElementById('taskInput');
         const taskText = taskInput.value.trim();
+        const prioritySelect = document.getElementById('prioritySelect');
         
         if (taskText) {
             const newTask = {
                 id: this.taskIdCounter++,
                 text: taskText,
                 completed: false,
+                priority: prioritySelect ? prioritySelect.value : 'medium',
                 createdAt: new Date().toISOString()
             };
             

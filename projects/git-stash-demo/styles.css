@@ -42,6 +42,7 @@ h1 {
 .task-form form {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .task-form input {
@@ -50,6 +51,15 @@ h1 {
     border: 2px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+}
+
+.task-form select {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    min-width: 120px;
 }
 
 .task-form input:focus {
@@ -149,3 +159,15 @@ h1 {
 .delete-btn:hover {
     background-color: #c0392b;
 }
+
+/* 优先级相关样式 - 正在开发中 */
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* TODO: 完善优先级样式 */
